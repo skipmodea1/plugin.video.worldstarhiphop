@@ -30,21 +30,32 @@ class Main:
 		if (self.DEBUG) == 'true':
 			xbmc.log( "[ADDON] %s v%s (%s) debug mode, %s = %s, %s = %s" % ( __addon__, __version__, __date__, "ARGV", repr(sys.argv), "File", str(__file__) ), xbmc.LOGNOTICE )
 
-		# Parse parameters...
-		if len(sys.argv[2]) == 0:
-			self.plugin_category = __language__(30000)
-			self.video_list_page_url = BASEURL + "/videos/?start=001"
-			self.next_page_possible = "True"
-		else:
+		passed = "false"
+		try:
 			self.plugin_category = urlparse.parse_qs(urlparse.urlparse(sys.argv[2]).query)['plugin_category'][0]
 			self.video_list_page_url = urlparse.parse_qs(urlparse.urlparse(sys.argv[2]).query)['url'][0]
 			self.next_page_possible = urlparse.parse_qs(urlparse.urlparse(sys.argv[2]).query)['next_page_possible'][0]
+		except:
+			pass
+			passed = "true"
+		
+		if passed == "true":	
+			self.plugin_category = __language__(30000)
+ 			self.next_page_possible = "True"	
+			keyboard = xbmc.Keyboard('', __language__(30103))
+			#for some odd reason this if NEEDS to be here. It seems somewhere the code jumps forwards a few lines and the next button makes the search keyboard pop up. 
+			if passed == "true":
+				keyboard.doModal()
+       			if keyboard.isConfirmed() and keyboard.getText():
+	   				self.search_string = keyboard.getText()
+		   			self.video_list_page_url = "http://www.worldstarhiphop.com/videos/search.php?s=%s&start=001" % (self.search_string)
 		
 		if self.next_page_possible == 'True':
 		# Determine current item number, next item number, next_url
-			pos_of_page		 			 	 = self.video_list_page_url.rfind('?start=')
+			print "dd"
+			pos_of_page		 			 	 = self.video_list_page_url.rfind('&start=')
 			if pos_of_page >= 0:
-				page_number_str			     = str(self.video_list_page_url[pos_of_page + len('?start='):pos_of_page + len('?start=') + len('000')])
+				page_number_str			     = str(self.video_list_page_url[pos_of_page + len('&start='):pos_of_page + len('&start=') + len('000')])
 				page_number					 = int(page_number_str)
 				page_number_next			 = page_number + 1
 				if page_number_next >= 100:
@@ -54,6 +65,8 @@ class Main:
 				else:				
 					page_number_next_str = '00' + str(page_number_next)
 				self.next_url = str(self.video_list_page_url).replace(page_number_str, page_number_next_str)
+			
+				print str(self.next_url)
 			
 				if (self.DEBUG) == 'true':
 					xbmc.log( "[ADDON] %s v%s (%s) debug mode, %s = %s" % ( __addon__, __version__, __date__, "self.next_url", str(urllib.unquote_plus(self.next_url)) ), xbmc.LOGNOTICE )
@@ -98,21 +111,6 @@ class Main:
 		if (self.DEBUG) == 'true':
 			xbmc.log( "[ADDON] %s v%s (%s) debug mode, %s = %s" % ( __addon__, __version__, __date__, "len(items)", str(len(items)) ), xbmc.LOGNOTICE )
 		
-		
- 		#Add Search item		
-		print "sys.argv[1]: " + str(int(sys.argv[ 1 ]))
-#		video_page_url = "http://www.worldstarhiphop.com/videos/video.php?v=wshh3k29P3AgvYBu49OW"
- 		video_page_url = ""
- 		title = __language__(30103)
-#		thumbnail_url = "http://hw-static.worldstarhiphop.com/u/pic/2014/10/1z9Rr3wYf3he.jpg"
-		thumbnail_url = ""
-		parameters = {"action" : "search", "video_page_url" : video_page_url}
-		url = sys.argv[0] + '?' + urllib.urlencode(parameters)
-		listitem = xbmcgui.ListItem( title, iconImage="DefaultVideo.png", thumbnailImage=thumbnail_url )
-		listitem.setInfo( "video", { "Title" : title, "Studio" : "WorldWideHipHop" } )
-		folder = True
-		xbmcplugin.addDirectoryItem( handle = int(sys.argv[ 1 ] ), url = url, listitem=listitem, isFolder=folder)
-		
 		for item in items :
 			item_string = str(item)
 
@@ -145,7 +143,7 @@ class Main:
 			start_pos_title = item_string.find('>', end_pos_url2 + 1)
 			end_pos_title = item_string.find('<', start_pos_title + 1)
 			title = item_string[start_pos_title + 1 :end_pos_title]
-	
+			
 			#Clean up title
 			title = title.encode('utf-8')
 			title = title.replace('-',' ')
@@ -195,18 +193,19 @@ class Main:
 			
 			if (self.DEBUG) == 'true':
 				xbmc.log( "[ADDON] %s v%s (%s) debug mode, %s = %s" % ( __addon__, __version__, __date__, "title", str(title) ), xbmc.LOGNOTICE )
-			
+							
 			# Add to list...
 			parameters = {"action" : "play", "video_page_url" : video_page_url}
 			url = sys.argv[0] + '?' + urllib.urlencode(parameters)
 			listitem = xbmcgui.ListItem( title, iconImage="DefaultVideo.png", thumbnailImage=thumbnail_url )
 			listitem.setInfo( "video", { "Title" : title, "Studio" : "WorldWideHipHop" } )
 			folder = False
+			
 			xbmcplugin.addDirectoryItem( handle = int(sys.argv[ 1 ] ), url = url, listitem=listitem, isFolder=folder)
 
 		# Next page entry...
 		if self.next_page_possible == 'True':
-			parameters = {"action" : "list", "plugin_category" : self.plugin_category, "url" : str(self.next_url), "next_page_possible": self.next_page_possible}
+			parameters = {"action" : "search", "plugin_category" : self.plugin_category, "url" : str(self.next_url), "next_page_possible": self.next_page_possible}
 			url = sys.argv[0] + '?' + urllib.urlencode(parameters)
 			listitem = xbmcgui.ListItem (__language__(30503), iconImage = "DefaultFolder.png", thumbnailImage = os.path.join(__images_path__, 'next-page.png'))
 			folder = True
