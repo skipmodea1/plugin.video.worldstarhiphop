@@ -98,13 +98,9 @@ class Main:
 		if (self.DEBUG) == 'true':
 			xbmc.log( "[ADDON] %s v%s (%s) debug mode, %s = %s" % ( __addon__, __version__, __date__, "len(items)", str(len(items)) ), xbmc.LOGNOTICE )
 		
-		
  		#Add Search item		
-		print "sys.argv[1]: " + str(int(sys.argv[ 1 ]))
-#		video_page_url = "http://www.worldstarhiphop.com/videos/video.php?v=wshh3k29P3AgvYBu49OW"
  		video_page_url = ""
  		title = __language__(30103)
-#		thumbnail_url = "http://hw-static.worldstarhiphop.com/u/pic/2014/10/1z9Rr3wYf3he.jpg"
 		thumbnail_url = ""
 		parameters = {"action" : "search", "video_page_url" : video_page_url}
 		url = sys.argv[0] + '?' + urllib.urlencode(parameters)
@@ -184,8 +180,10 @@ class Main:
 			title = title.replace('  ',' ')
 			#welcome to characterset-hell
 			title = title.replace('&amp;#039;',"'")
-  			title = title.replace('&amp;quot;','"')
+			title = title.replace('&amp;#39;',"'")
+			title = title.replace('&amp;quot;','"')
 			title = title.replace("&#039;","'")
+  			title = title.replace("&#39;","'")
   			title = title.replace('&amp;amp;','&')
   			title = title.replace('&amp;','&')
   			title = title.replace('&quot;','"')
