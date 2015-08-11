@@ -193,6 +193,7 @@ class Main:
   		 	title = title.replace('&ldquo;','"')
   		  	title = title.replace('&rdquo;','"')
   		  	title = title.replace('&rsquo;',"'")
+		  	title = title.replace('&ndash;',"/")
 			
 			if (self.DEBUG) == 'true':
 				xbmc.log( "[ADDON] %s v%s (%s) debug mode, %s = %s" % ( __addon__, __version__, __date__, "title", str(title) ), xbmc.LOGNOTICE )
