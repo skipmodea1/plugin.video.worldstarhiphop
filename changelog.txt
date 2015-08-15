@@ -1,3 +1,6 @@
+v1.0.4 (Wednesday, 5 August 2015):
+- changed some utf-8 stuff
+
 v1.0.2/3 (Wednesday, 5 August 2015):
 - fixed characterset bug when listing videos
 

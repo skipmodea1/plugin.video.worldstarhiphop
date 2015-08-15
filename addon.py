@@ -17,8 +17,8 @@
 #
 #also in ..._const
 __addon__       = "plugin.video.worldstarhiphop"
-__date__        = "05 august 2015"
-__version__     = "1.0.2"
+__date__        = "15 august 2015"
+__version__     = "1.0.4"
 
 #
 # Imports

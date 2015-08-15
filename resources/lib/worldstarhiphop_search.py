@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+
 #
 # Imports
 #
@@ -13,9 +16,6 @@ import xbmc
 import xbmcaddon
 import xbmcgui
 import xbmcplugin
-
-reload(sys)  
-sys.setdefaultencoding('utf8')
 
 BASEURL = "http://www.worldstarhiphop.com"
 #
@@ -139,7 +139,10 @@ class Main:
 			title = item_string[start_pos_title + 1 :end_pos_title]
 			
 			#Clean up title
-			title = title.encode('utf-8')
+			try:
+				title = title.encode('utf-8')
+			except:
+				pass
 			title = title.replace('-',' ')
 			title = title.replace('/',' ')
 			title = title.replace(' i ',' I ')
