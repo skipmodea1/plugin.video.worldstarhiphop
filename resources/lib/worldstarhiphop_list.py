@@ -150,6 +150,7 @@ class Main:
 				title = title.encode('utf-8')
 			except:
 				pass
+			
 			title = title.replace('-',' ')
 			title = title.replace('/',' ')
 			title = title.replace(' i ',' I ')
@@ -185,6 +186,7 @@ class Main:
 			title = title.replace('  ',' ')
 			title = title.replace('  ',' ')
 			#welcome to characterset-hell
+			title = title.replace('&pound;',"Pound Sign")
 			title = title.replace('&amp;#039;',"'")
 			title = title.replace('&amp;#39;',"'")
 			title = title.replace('&amp;quot;','"')
