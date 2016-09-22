@@ -1,6 +1,8 @@
 v1.0.7 (2016-09-21):
-- changed addon debugging info to kodi debugging info
 - added support for youtube videos
+- changed addon debugging info to kodi debugging info
+- using po-files
+  
 
 v1.0.6 (2016-03-12):
 - changed the listing and playing of videos
