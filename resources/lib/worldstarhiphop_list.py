@@ -8,14 +8,15 @@ from future import standard_library
 standard_library.install_aliases()
 from builtins import str
 from builtins import object
-from worldstarhiphop_const import ADDON, SETTINGS, LANGUAGE, IMAGES_PATH, DATE, VERSION, HEADERS, BASEURL, convertToUnicodeString, log, getSoup
 import os
-import re
 import sys
 import urllib.request, urllib.parse, urllib.error
+import re
 import xbmcgui
 import xbmcplugin
 import requests
+
+from worldstarhiphop_const import ADDON, SETTINGS, LANGUAGE, IMAGES_PATH, HEADERS, BASEURL, convertToUnicodeString, log, getSoup
 
 
 
