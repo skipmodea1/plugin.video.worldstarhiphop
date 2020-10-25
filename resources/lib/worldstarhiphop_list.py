@@ -135,7 +135,6 @@ class Main(object):
             log("video_page_url", video_page_url)
 
             # skip the item if the video page url isn't a real video page url
-            # if str(video_page_url).find('/videos/video.php?v=') == -1:
             if str(video_page_url).find('/video.php?v=') == -1:
 
                 log("skipping item because no video could be found", video_page_url)
